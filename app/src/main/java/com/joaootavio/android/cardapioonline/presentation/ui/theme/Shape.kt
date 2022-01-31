@@ -1,4 +1,4 @@
-package com.joaootavio.android.cardapioonline.ui.theme
+package com.joaootavio.android.cardapioonline.presentation.ui.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes

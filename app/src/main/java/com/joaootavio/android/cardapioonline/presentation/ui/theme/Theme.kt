@@ -1,4 +1,4 @@
-package com.joaootavio.android.cardapioonline.ui.theme
+package com.joaootavio.android.cardapioonline.presentation.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
