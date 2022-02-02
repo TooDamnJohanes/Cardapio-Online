@@ -1,21 +1,27 @@
 package com.joaootavio.android.cardapioonline.presentation.recipes_list.components
 
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import com.joaootavio.android.cardapioonline.R
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.ThumbUp
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
@@ -35,6 +41,7 @@ import com.joaootavio.android.cardapioonline.common.Constants.MIN
 import com.joaootavio.android.cardapioonline.common.Constants.UNHEALTHY_FOOD
 import com.joaootavio.android.cardapioonline.data.remote.dto.Result
 
+@ExperimentalMaterialApi
 @Composable
 @Preview
 fun RecipeItem(
@@ -56,8 +63,9 @@ fun RecipeItem(
         veryHealthy = true
     )
 ) {
-    val isCheapText = if(recipe.cheap) CHEAP else EXPENSIVE
-    val isCheapColor = if(recipe.cheap) Color(0xFF00C980) else Color(0xFFFF4646)
+    var expandedState by remember { mutableStateOf(false) }
+    val isCheapText = if (recipe.cheap) CHEAP else EXPENSIVE
+    val isCheapColor = if (recipe.cheap) Color(0xFF00C980) else Color(0xFFFF4646)
     val likesText = if (recipe.aggregateLikes > 1) LIKES else LIKE
     val likesColor = if (recipe.aggregateLikes < 20) Color(0xFFFF4646).copy(alpha = 0.4f)
     else Color(0xFFFF4646)
@@ -66,23 +74,40 @@ fun RecipeItem(
             .background(MaterialTheme.colors.background)
             .fillMaxWidth()
             .heightIn(min = 200.dp)
+            .animateContentSize(
+                animationSpec = tween(
+                    durationMillis = 300,
+                    easing = LinearOutSlowInEasing
+                )
+            )
             .padding(start = 10.dp, end = 10.dp, top = 5.dp, bottom = 5.dp),
         shape = RoundedCornerShape(6.dp),
-        elevation = 2.dp
+        elevation = 2.dp,
+        onClick = {
+            expandedState = !expandedState
+        }
     ) {
         Row(
             horizontalArrangement = Arrangement.Start,
             modifier = Modifier
-                .padding(start = 5.dp, end = 5.dp, top = 5.dp)
+                .padding(start = 5.dp, end = 5.dp, top = 5.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Image(
-                painter = rememberImagePainter(data = recipe.image),
-                contentDescription = "Recipe Image",
+            Card(
                 modifier = Modifier
-                    .height(180.dp)
-                    .width(180.dp),
-            )
-
+                    .height(200.dp)
+                    .width(200.dp),
+                shape = RoundedCornerShape(15.dp)
+            ) {
+                Image(
+                    painter = rememberImagePainter(data = recipe.image),
+                    contentDescription = "Recipe Image",
+                    modifier = Modifier
+                        .height(200.dp)
+                        .width(200.dp),
+                    contentScale = ContentScale.Crop
+                )
+            }
             Column(
                 modifier = Modifier
                     .padding(start = 5.dp, end = 5.dp, bottom = 10.dp)
@@ -146,6 +171,23 @@ fun RecipeItem(
                         }
                     }
                 }
+
+                if (expandedState) {
+                    Divider()
+                    Card(
+                        modifier = Modifier
+                            .height(200.dp)
+                            .wrapContentHeight(),
+                        shape = RoundedCornerShape(15.dp)
+                    ) {
+                        LazyColumn {
+                            items(recipe.extendedIngredients) { ingredients ->
+                                IngredientItem(ingredient = ingredients.name)
+                            }
+                        }
+                    }
+                    Divider()
+                }
             }
         }
     }
@@ -205,6 +247,32 @@ fun IconInformationPainter(
                 fontWeight = FontWeight.Bold,
                 fontStyle = FontStyle.Italic
             )
+        )
+    }
+}
+
+@Composable
+fun IngredientItem(
+    ingredient: String
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 5.dp, end = 5.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            imageVector = Icons.Default.Check,
+            tint = Color(0xFF00C980),
+            contentDescription = "Ingredients"
+        )
+        Text(
+            text = ingredient,
+            fontWeight = FontWeight.Bold,
+            fontStyle = FontStyle.Italic,
+            fontSize = 10.sp,
+            modifier = Modifier
+                .padding(start = 5.dp)
         )
     }
 }

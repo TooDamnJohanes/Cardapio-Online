@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Divider
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -19,6 +20,7 @@ import com.joaootavio.android.cardapioonline.presentation.recipes_list.component
 import com.joaootavio.android.cardapioonline.presentation.recipes_list.components.RecipeItem
 import com.joaootavio.android.cardapioonline.presentation.recipes_list.components.SearchButton
 
+@ExperimentalMaterialApi
 @Composable
 fun RecipesScreen(
     viewModel: RecipesViewModel = hiltViewModel()
@@ -79,6 +81,7 @@ fun RecipesScreen(
 
 }
 
+@ExperimentalMaterialApi
 @Composable
 @Preview
 fun RecipesScreenPreview() {
