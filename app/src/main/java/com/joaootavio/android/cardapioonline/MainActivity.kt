@@ -23,11 +23,10 @@ import com.joaootavio.android.cardapioonline.presentation.recipes_list.RecipesSc
 import com.joaootavio.android.cardapioonline.navigation.Screen
 import com.joaootavio.android.cardapioonline.presentation.ui.theme.CardapioOnlineTheme
 import dagger.hilt.android.AndroidEntryPoint
-
+@ExperimentalComposeUiApi
+@ExperimentalMaterialApi
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    @ExperimentalComposeUiApi
-    @ExperimentalMaterialApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
