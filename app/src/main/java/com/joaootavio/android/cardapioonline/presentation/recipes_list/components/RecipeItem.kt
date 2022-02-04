@@ -76,7 +76,7 @@ fun RecipeItem(
             .heightIn(min = 200.dp)
             .animateContentSize(
                 animationSpec = tween(
-                    durationMillis = 300,
+                    durationMillis = 500,
                     easing = LinearOutSlowInEasing
                 )
             )
